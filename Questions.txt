@@ -1,0 +1,99 @@
+/***********************************************************************
+File:             Questions.txt
+
+Author:           <your name>
+
+Course:           CS 367, Fall 2016
+***********************************************************************/
+
+Directions: answer the following five (5) questions.
+
+
+1) Each sort algorithm is supposed to put the elements of the input
+array into ascending order.  How did you test your code to determine
+if it did this?
+
+Answer:
+
+
+2) In this question you will run TestSort four times using the
+parameters indicated in the table:
+
+    run 1: 50 54321
+    run 2: 500 54321
+    run 3: 5000 54321
+    run 4: 50000 54321
+
+What are the sort statistics for each of the runs?
+
+Answer:
+
+
+3) In this question you again will run TestSort four times using the
+parameters indicated in the table:
+
+    run 5: 2000 12345
+    run 6: 2000 12345
+    run 7: 2000 12345
+    run 8: 2000 12345
+
+What are the sort statistics for each of the runs?
+
+Answer:
+
+
+4) In this question you will run TestSort three times using the
+parameters indicated in the table:
+
+    run  9: 6000 36714
+    run 10: 6000 36714
+    run 11: 6000 36714
+
+- For run 9 you will use the TestSort program as originally written.
+
+- For run 10 you will modify the TestSort program so that instead of
+  creating an input array of random integers, it creates an input
+  array that is already in ascending order.  The easiest way to do
+  this is to replace the line:
+
+      arr[k] = new SortObject(random.nextInt());
+
+  with the line:
+
+      arr[k] = new SortObject(k);
+
+- For run 11 you will modify the TestSort program so that it creates
+  an input array that is already in descending order. The easiest way
+  to do this is to replace the line:
+
+      arr[k] = new SortObject(random.nextInt());
+
+  with the line:
+
+      arr[k] = new SortObject(arrSize - k);
+
+What are the sort statistics for each of the runs?
+
+Answer:
+
+
+5) Briefly analyze your results from questions 2, 3, and 4.  Your
+analysis should consider the following:
+
+    - Are your results are consistent with the complexities of the
+      sorting algorithms (as derived in class)?
+
+    - How does the size of the input array affect a sort's performance
+      relative to other sorts?
+
+    - How does the order of values in the input array (runs 9-11) affect
+      a sort's performance relative to other sorts?
+
+    - Which of the statistics (compares, data moves, time) provides
+      the most useful information for determining the efficiency of a
+      sort?
+
+You should back up your analysis with examples and specific references
+to your results.
+
+Answer:
