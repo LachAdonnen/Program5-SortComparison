@@ -70,7 +70,45 @@ public class ComparisonSort {
      * @param A    the array to sort
      */
     public static <E extends Comparable<E>> void mergeSort(E[] A) {
-        // TODO: implement this sorting algorithm
+    	// Quit early if the minimum size is reached
+    	if (A.length == 1) { return; }
+    	
+    	// Create the left sub-array and populate it
+        @SuppressWarnings("unchecked")
+		E[] leftArr = (E[])(new Comparable[A.length / 2]);
+        for (int i = 0; i < leftArr.length; i++) {
+        	leftArr[i] = cacheElement(A, i);
+        }
+        // Create the right sub-array and populate it
+        @SuppressWarnings("unchecked")
+		E[] rightArr = (E[])(new Comparable[(A.length + 1) / 2]);
+        for (int i = 0; i < rightArr.length; i++) {
+        	rightArr[i]= cacheElement(A, i + leftArr.length);
+        }
+        
+        mergeSort(leftArr);
+        mergeSort(rightArr);
+        
+        int leftPos = 0;
+        int rightPos = 0;
+        for (int i = 0; i < A.length; i++) {
+        	if (rightPos >= rightArr.length) {
+        		unpackElement(A, i, leftArr[leftPos]);
+        		leftPos++;
+        	}
+        	else if (leftPos >= leftArr.length) {
+        		unpackElement(A, i, rightArr[rightPos]);
+        		rightPos++;
+        	}
+        	else if (leftArr[leftPos].compareTo(rightArr[rightPos]) < 0) {
+        		unpackElement(A, i, leftArr[leftPos]);
+        		leftPos++;
+        	}
+        	else {
+        		unpackElement(A, i, rightArr[rightPos]);
+        		rightPos++;
+        	}
+        }
     }
 
     /**
@@ -83,7 +121,84 @@ public class ComparisonSort {
      * @param A   the array to sort
      */
     public static <E extends Comparable<E>> void quickSort(E[] A) {
-        // TODO: implement this sorting algorithm
+    	quickSortRecursive(A, 0, A.length - 1);
+    }
+    
+    private static <E extends Comparable<E>> void quickSortRecursive (E[] A,
+    		int leftPos, int rightPos) {
+    	int length = rightPos - leftPos + 1;
+        if (length <= 1) { return; }
+        if (length == 2) {
+        	if (A[leftPos].compareTo(A[rightPos]) > 0) {
+        		swapElements(A, leftPos, rightPos);
+        	}
+        	return;
+        }
+        E pivot = medianOfThree(A, leftPos, rightPos);
+        if (pivot == null) { return; }
+        // Median of Three will sort an array of length 3
+        if (length == 3) { return; }
+        
+        int leftInc = leftPos + 1;
+        int rightInc = rightPos - 2;
+        while (leftInc <= rightInc) {
+        	while (A[leftInc].compareTo(pivot) < 0) { leftInc++; }
+        	while (A[rightInc].compareTo(pivot) > 0) { rightInc--; }
+        	if (leftInc < rightInc) { swapElements(A, leftInc, rightInc); }
+        }
+        quickSortRecursive(A, leftPos, rightInc);
+        quickSortRecursive(A, rightInc + 1, rightPos);
+    }
+    
+    private static <E extends Comparable<E>> E medianOfThree(E[] A,
+    		int leftPos, int rightPos) {
+    	int length = rightPos - leftPos + 1;
+    	if (length < 3) { return null; }
+    	E max, median, min;
+    	int midPos = (leftPos + rightPos) / 2;
+    	E secondToLast = null;
+    	if (length > 3) { secondToLast = cacheElement(A, rightPos - 1); }
+    	if (A[leftPos].compareTo(A[rightPos]) > 0) {
+    		if (A[leftPos].compareTo(A[midPos]) > 0) {
+    			max = cacheElement(A, leftPos);
+    			if (A[midPos].compareTo(A[rightPos]) > 0) {
+    				median = cacheElement(A, midPos);
+    				min = cacheElement(A, rightPos);
+    			}
+    			else {
+    				median = cacheElement(A, rightPos);
+    				min = cacheElement(A, midPos);
+    			}
+    		}
+    		else {
+    			max = cacheElement(A, midPos);
+				median = cacheElement(A, leftPos);
+				min = cacheElement(A, rightPos);
+    		}
+    	}
+    	else {
+    		if (A[leftPos].compareTo(A[midPos]) < 0) {
+    			min = cacheElement(A, leftPos);
+    			if (A[midPos].compareTo(A[rightPos]) < 0) {
+    				median = cacheElement(A, midPos);
+    				max = cacheElement(A, rightPos);
+    			}
+    			else {
+    				median = cacheElement(A, rightPos);
+    				max = cacheElement(A, midPos);
+    			}
+    		}
+    		else {
+    			min = cacheElement(A, midPos);
+				median = cacheElement(A, leftPos);
+				max = cacheElement(A, rightPos);
+    		}
+    	}
+    	unpackElement(A, leftPos, min);
+    	if (length > 3) { unpackElement(A, midPos, secondToLast); }
+    	unpackElement(A, rightPos - 1, median);
+    	unpackElement(A, rightPos, max);
+    	return median;
     }
 
 
@@ -106,7 +221,69 @@ public class ComparisonSort {
      * @param A    the array to sort
      */
     public static <E extends Comparable<E>> void heapSort(E[] A) {
-        // TODO: implement this sorting algorithm
+        @SuppressWarnings("unchecked")
+		E[] heapArr = (E[])(new Comparable[A.length + 1]);
+        for (int i = 0; i < A.length; i++) { heapInsert(heapArr, A[i], i + 1); }
+        for (int i = A.length; i > 0; i--) {
+        	unpackElement(A, i - 1, heapRemove(heapArr, i));
+        }
+    }
+    
+    private static <E extends Comparable<E>> void heapInsert(E[] heap, E item,
+    		int insertPos) {
+        heap[insertPos] = item;
+        incrementSwapCounter();
+        // Fix the heap order
+    	boolean done = false;
+        while (!done && insertPos > 1) {
+        	int parentPos = insertPos / 2;
+        	if (heap[insertPos].compareTo(heap[parentPos]) > 0) {
+        		swapElements(heap, insertPos, parentPos);
+        		insertPos = parentPos;
+        	}
+        	else { done = true; }
+        }
+    }
+    
+    private static <E extends Comparable<E>> E heapRemove(E[] heap,
+    		int lastPos) {
+    	E returnValue = cacheElement(heap, 1);
+    	unpackElement(heap, 1, heap[lastPos]);
+    	boolean done = false;
+    	// Fix the heap order
+    	int currPos = 1;
+    	while (!done) {
+    		int leftPos = currPos * 2;
+    		if (leftPos >= lastPos) { done = true; }
+    		else {
+    			int rightPos = currPos * 2 + 1;
+    			if (rightPos >= lastPos) {
+    				if (heap[currPos].compareTo(heap[leftPos]) < 0) {
+    					swapElements(heap, currPos, leftPos);
+    					currPos = leftPos;
+    				}
+    				else { done = true; }
+    			}
+    			else {
+    				if (heap[currPos].compareTo(heap[leftPos]) < 0) {
+						if (heap[leftPos].compareTo(heap[rightPos]) < 0) {
+							swapElements(heap, currPos, rightPos);
+							currPos = rightPos;
+						}
+						else {
+							swapElements(heap, currPos, leftPos);
+							currPos = leftPos;
+						}
+    				}
+    				else if (heap[currPos].compareTo(heap[rightPos]) < 0) {
+    					swapElements(heap, currPos, rightPos);
+    					currPos = rightPos;
+    				}
+    				else { done = true; }
+    			}
+    		}
+    	}
+    	return returnValue;
     }
 
     /**
@@ -262,6 +439,27 @@ public class ComparisonSort {
         insertionSort(clone);
         postSortSteps("Insertion", startTime);
     	validateSort(clone);
+        
+        // Merge Sort
+        clone = copyArray(A);
+        startTime = preSortSteps();
+        mergeSort(clone);
+        postSortSteps("Merge", startTime);
+    	validateSort(clone);
+        
+        // Merge Sort
+        clone = copyArray(A);
+        startTime = preSortSteps();
+        quickSort(clone);
+        postSortSteps("Quick", startTime);
+    	validateSort(clone);
+        
+        // Merge Sort
+        clone = copyArray(A);
+        startTime = preSortSteps();
+        heapSort(clone);
+        postSortSteps("Heap", startTime);
+    	validateSort(clone);
     }
     
     private static long preSortSteps() {
@@ -284,7 +482,7 @@ public class ComparisonSort {
     		if (A[i + 1].compareTo(A[i]) < 0) { badSort = true; }
     	}
     	//System.out.println("");
-    	if (badSort) { System.out.println("Bad Sort"); }
+    	if (badSort) { System.out.println("!!!Bad Sort!!!"); }
     }
     
     private static <E extends Comparable<E>> void swapElements(E[] A, int pos1,
