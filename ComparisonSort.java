@@ -1,4 +1,12 @@
-import java.util.Arrays;
+///////////////////////////////////////////////////////////////////////////////
+// Title:            Prog5-SortComparison
+// Files:            ComparisonSort.java
+// Semester:         Fall 2016
+//
+// Author:           Alex McClain, gamcclain@wisc.edu
+// CS Login:         gamcclain@wisc.edu
+// Lecturer's Name:  Charles Fischer
+///////////////////////////////////////////////////////////////////////////////
 
 /**
  * This class implements six different comparison sorts (and an optional
@@ -124,6 +132,15 @@ public class ComparisonSort {
     	quickSortRecursive(A, 0, A.length - 1);
     }
     
+    
+    /**
+     * Recursive call for performing quick sort on an array. Reorders the
+     * elements within the array itself  confined to the range of positions
+     * passed in.
+     * @param A The array of elements to be sorted.
+     * @param leftPos The leftmost position of the range to sort.
+     * @param rightPos The rightmost position of the range to sort.
+     */
     private static <E extends Comparable<E>> void quickSortRecursive (E[] A,
     		int leftPos, int rightPos) {
     	int length = rightPos - leftPos + 1;
@@ -150,6 +167,16 @@ public class ComparisonSort {
         quickSortRecursive(A, rightInc + 1, rightPos);
     }
     
+    /**
+     * Helper method for the quick sort that will determine the median of the
+     * first, last, and middle elements in the array. Additionally, it will
+     * rearrange those three elements so that the minimum is at the left, the
+     * maximum is at the right, and the median is just to the left of the max.
+     * @param A The array of elements to be sorted.
+     * @param leftPos The leftmost position of the range to sort.
+     * @param rightPos The rightmost position of the range to sort.
+     * @return The median value to be used as a pivot in the quick sort.
+     */
     private static <E extends Comparable<E>> E medianOfThree(E[] A,
     		int leftPos, int rightPos) {
     	int length = rightPos - leftPos + 1;
@@ -229,6 +256,14 @@ public class ComparisonSort {
         }
     }
     
+    /**
+     * Inserts a new element into the heap array at the end, then reorders the
+     * array in order to preserve the heap properties.
+     * @param heap The heap array into which the insertion is made.
+     * @param item The item to insert into the heap.
+     * @param insertPos The position where the element should be inserted. This
+     * should be the position to the right of the last element. 
+     */
     private static <E extends Comparable<E>> void heapInsert(E[] heap, E item,
     		int insertPos) {
         heap[insertPos] = item;
@@ -245,6 +280,13 @@ public class ComparisonSort {
         }
     }
     
+    /**
+     * Removes and returns the maximum element from the heap, then reorders the
+     * array in order to preserve the heap properties.
+     * @param heap The heap array from which to get the max element.
+     * @param lastPos The position of the last element in the heap.
+     * @return The maximum element stored at the root of the heap.
+     */
     private static <E extends Comparable<E>> E heapRemove(E[] heap,
     		int lastPos) {
     	E returnValue = cacheElement(heap, 1);
@@ -541,18 +583,36 @@ public class ComparisonSort {
     	validateSort(clone);
     }
     
+    /**
+     * Steps to take prior to running a sort in order to gather accurate
+     * statistics. This includes clearing the data swap and compare counter and
+     * retrieving the current system time.
+     * @return The current system time in miliseconds.
+     */
     private static long preSortSteps() {
     	clearSwapCounter();
     	SortObject.resetCompares();
     	return System.currentTimeMillis();
     }
     
+    /**
+     * Steps to take after the sort has finished running. This will calculate
+     * the time duration of the sort and then print all relevant statistics.
+     * @param sortType String value describing the type of sort.
+     * @param startTime The system time, in miliseconds, when the sort started.
+     */
     private static void postSortSteps(String sortType, Long startTime) {
     	long duration = System.currentTimeMillis() - startTime;
     	printStatistics(sortType, SortObject.getCompares(), numDataSwaps,
     			duration);
     }
     
+    /**
+     * Validates that the sort correctly reordered the array so the elements are
+     * in order. Does this by simpily traversing the array and ensuring no two
+     * elements are out of order.
+     * @param A The array of elements to validate.
+     */
     private static void validateSort(SortObject[] A) {
     	boolean badSort = false;
     	for (int i = 0; i < A.length - 1; i++) {
@@ -563,6 +623,12 @@ public class ComparisonSort {
     	if (badSort) { System.out.println("!!!Bad Sort!!!"); }
     }
     
+    /**
+     * Swaps two elements in the array.
+     * @param A The array containing the elements to be swapped.
+     * @param pos1 Position of the first element to swap.
+     * @param pos2 Position of the second element to swap.
+     */
     private static <E extends Comparable<E>> void swapElements(E[] A, int pos1,
     		int pos2) {
     	E cache = cacheElement(A, pos1);
@@ -570,27 +636,59 @@ public class ComparisonSort {
     	unpackElement(A, pos2, cache);
     }
     
+    /**
+     * Moves an element from one position in the array to another. The value in
+     * the destination position is overwritten.
+     * @param A The array containing the element to be moved.
+     * @param pos1 The source position of the element to move.
+     * @param pos2 The destination position for the element to be moved.
+     */
     private static <E extends Comparable<E>> void moveElement(E[] A, int pos1,
     		int pos2) {
     	incrementSwapCounter();
     	A[pos2] = A[pos1];
     }
     
+    /**
+     * Returns the value of an element in the array.
+     * @param A The array containing the desired element.
+     * @param pos The position of the element to be returned.
+     * @return The element in the given position.
+     */
     private static <E extends Comparable<E>> E cacheElement(E[] A, int pos) {
     	incrementSwapCounter();
     	return A[pos];
     }
     
+    /**
+     * Inserts the given element into the array. Any element already at the
+     * given position is overwritten.
+     * @param A The array into which the element should be inserted.
+     * @param pos The position to insert the element.
+     * @param cache The element to be inserted.
+     */
     private static <E extends Comparable<E>> void unpackElement(E[] A, int pos,
     		E cache) {
     	incrementSwapCounter();
     	A[pos] = cache;
     }
     
+    /**
+     * Resets the data swap counter to 0.
+     */
     private static void clearSwapCounter() { numDataSwaps = 0; }
     
+    /**
+     * Incrememnts the swap counter by 1.
+     */
     private static void incrementSwapCounter() { numDataSwaps += 1; }
     
+    /**
+     * Performs a deep copy of the given array, but only for SortObjects. The
+     * new array will have new SortObject objects with the same values.
+     * @param A The array to copy.
+     * @return A copy of the given array with entirely new Object references.
+     */
     private static SortObject[] copyArray(SortObject[] A) {
     	SortObject[] returnArr = new SortObject[A.length];
     	for (int i = 0; i < A.length; i++) {
