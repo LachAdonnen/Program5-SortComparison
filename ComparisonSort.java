@@ -143,7 +143,7 @@ public class ComparisonSort {
         int rightInc = rightPos - 2;
         while (leftInc <= rightInc) {
         	while (A[leftInc].compareTo(pivot) < 0) { leftInc++; }
-        	while (A[rightInc].compareTo(pivot) > 0) { rightInc--; }
+        	while (A[rightInc].compareTo(pivot) >= 0) { rightInc--; }
         	if (leftInc < rightInc) { swapElements(A, leftInc, rightInc); }
         }
         quickSortRecursive(A, leftPos, rightInc);
@@ -327,7 +327,46 @@ public class ComparisonSort {
      * @param A    the array to sort
      */
     public static <E extends Comparable<E>> void selection2Sort(E[] A) {
-        // TODO: implement this sorting algorithm
+        for (int i = 0; i <= (A.length - 2) / 2; i++) {
+        	int leftFill = i;
+        	int rightFill = A.length - 1 - i;
+        	int minPos = leftFill;
+        	int maxPos = rightFill;
+        	for (int j = i; j <= (A.length - 1) / 2; j++) {
+        		int leftTest = j;
+        		int rightTest = A.length - 1 - j;
+        		if (A[leftTest].compareTo(A[rightTest]) < 0) {
+        			if (A[leftTest].compareTo(A[minPos]) < 0) {
+        				minPos = leftTest;
+        			}
+        			if (A[rightTest].compareTo(A[maxPos]) > 0) {
+        				maxPos = rightTest;
+        			}
+        		}
+        		else {
+        			if (A[rightTest].compareTo(A[minPos]) < 0) {
+        				minPos = rightTest;
+        			}
+        			if (A[leftTest].compareTo(A[maxPos]) > 0) {
+        				maxPos = leftTest;
+        			}
+        		}
+        	}
+        	if (maxPos == leftFill) {
+        		if (minPos == rightFill) {
+        			swapElements(A, minPos, maxPos);
+        		}
+        		else {
+        			swapElements(A, maxPos, rightFill);
+        			swapElements(A, minPos, leftFill);
+        		}
+        	}
+        	else {
+        		swapElements(A, minPos, leftFill);
+        		swapElements(A, maxPos, rightFill);
+        	}
+        	
+        }
     }
 
     
@@ -376,7 +415,33 @@ public class ComparisonSort {
      * @throws IllegalArgumentException if the length or A is not even
      */    
     public static <E extends Comparable<E>> void insertion2Sort(E[] A) { 
-        // TODO: implement this sorting algorithm 
+        for (int i = A.length / 2 - 1; i >= 0; i--) {
+        	int leftTest = i;
+        	int rightTest = A.length - 1 - i;
+        	if (A[leftTest].compareTo(A[rightTest]) > 0) {
+        		swapElements(A, leftTest, rightTest);
+        	}
+        	E rightVal = cacheElement(A, rightTest);
+        	for (int j = rightTest - 1; j >= leftTest; j--) {
+        		if (A[j].compareTo(rightVal) > 0) {
+        			moveElement(A, j, j + 1);
+        		}
+        		else {
+        			unpackElement(A, j + 1, rightVal);
+        			break;
+        		}
+        	}
+        	E leftVal = cacheElement(A, leftTest);
+        	for (int j = leftTest + 1; j <= rightTest; j++) {
+        		if (A[j].compareTo(leftVal) < 0) {
+        			moveElement(A, j, j - 1);
+        		}
+        		else {
+        			unpackElement(A, j - 1, leftVal);
+        			break;
+        		}
+        	}
+        }
     }
 
     /**
@@ -447,18 +512,32 @@ public class ComparisonSort {
         postSortSteps("Merge", startTime);
     	validateSort(clone);
         
-        // Merge Sort
+        // Quick Sort
         clone = copyArray(A);
         startTime = preSortSteps();
         quickSort(clone);
         postSortSteps("Quick", startTime);
     	validateSort(clone);
         
-        // Merge Sort
+        // Heap Sort
         clone = copyArray(A);
         startTime = preSortSteps();
         heapSort(clone);
         postSortSteps("Heap", startTime);
+    	validateSort(clone);
+        
+        // Selection 2 Sort
+        clone = copyArray(A);
+        startTime = preSortSteps();
+        selection2Sort(clone);
+        postSortSteps("Selection2", startTime);
+    	validateSort(clone);
+        
+        // Insertion 2 Sort
+        clone = copyArray(A);
+        startTime = preSortSteps();
+        insertion2Sort(clone);
+        postSortSteps("Insertion2", startTime);
     	validateSort(clone);
     }
     
@@ -474,14 +553,13 @@ public class ComparisonSort {
     			duration);
     }
     
-    //TODO
     private static void validateSort(SortObject[] A) {
     	boolean badSort = false;
     	for (int i = 0; i < A.length - 1; i++) {
-    		//System.out.print(A[i] + ",");
-    		if (A[i + 1].compareTo(A[i]) < 0) { badSort = true; }
+    		if (A[i + 1].compareTo(A[i]) < 0) {
+    			badSort = true;
+    		}
     	}
-    	//System.out.println("");
     	if (badSort) { System.out.println("!!!Bad Sort!!!"); }
     }
     

@@ -1,7 +1,7 @@
 /***********************************************************************
 File:             Questions.txt
 
-Author:           <your name>
+Author:           Alex McClain
 
 Course:           CS 367, Fall 2016
 ***********************************************************************/
@@ -14,6 +14,7 @@ array into ascending order.  How did you test your code to determine
 if it did this?
 
 Answer:
+I created a separate tag, validateSort, in ComparisonSort that checks the array after the statistics are collected. The validation simply traverses the array and ensures that no two elements were out of order.
 
 
 2) In this question you will run TestSort four times using the
@@ -27,6 +28,57 @@ parameters indicated in the table:
 What are the sort statistics for each of the runs?
 
 Answer:
+Parameters used:
+  # items in input array: 50
+  random # seed: 54321
+algorithm                data compares     data moves   milliseconds
+---------                -------------     ----------   ------------
+Selection                        1,225            141              0
+Insertion                          717            769              0
+Merge                              223            572              0
+Quick                              407            348              0
+Heap                               421            806              1
+Selection2                         975            147              0
+Insertion2                         513            583              0
+
+Parameters used:
+  # items in input array: 500
+  random # seed: 54321
+algorithm                data compares     data moves   milliseconds
+---------                -------------     ----------   ------------
+Selection                      124,750          1,464              4
+Insertion                       59,411         59,914              5
+Merge                            3,862          8,976              1
+Quick                            6,585          4,617              1
+Heap                             7,629         13,463              1
+Selection2                      94,125          1,500              4
+Insertion2                      42,636         43,234              3
+
+Parameters used:
+  # items in input array: 5000
+  random # seed: 54321
+algorithm                data compares     data moves   milliseconds
+---------                -------------     ----------   ------------
+Selection                   12,497,500         14,973             37
+Insertion                    6,264,882      6,269,887             55
+Merge                           55,246        123,616              4
+Quick                           95,264         57,584              7
+Heap                           109,631        184,208              5
+Selection2                   9,378,750         15,000            118
+Insertion2                   4,116,332      4,122,591             38
+
+Parameters used:
+  # items in input array: 50000
+  random # seed: 54321
+algorithm                data compares     data moves   milliseconds
+---------                -------------     ----------   ------------
+Selection                1,249,975,000        149,958          3,116
+Insertion                  627,966,937    628,016,945          4,066
+Merge                          718,429      1,568,928             77
+Quick                        1,216,846        695,029             26
+Heap                         1,429,362      2,341,586             42
+Selection2                 937,537,500        150,000          4,617
+Insertion2                 417,542,152    417,604,928          2,181
 
 
 3) In this question you again will run TestSort four times using the
@@ -40,6 +92,57 @@ parameters indicated in the table:
 What are the sort statistics for each of the runs?
 
 Answer:
+Parameters used:
+  # items in input array: 2000
+  random # seed: 12345
+algorithm                data compares     data moves   milliseconds
+---------                -------------     ----------   ------------
+Selection                    1,999,000          5,982             13
+Insertion                      989,074        991,080             18
+Merge                           19,426         43,904              2
+Quick                           32,647         21,317              2
+Heap                            38,559         65,897              2
+Selection2                   1,501,500          5,997             31
+Insertion2                     681,413        683,874             18
+
+Parameters used:
+  # items in input array: 2000
+  random # seed: 12345
+algorithm                data compares     data moves   milliseconds
+---------                -------------     ----------   ------------
+Selection                    1,999,000          5,982             13
+Insertion                      989,074        991,080             17
+Merge                           19,426         43,904              2
+Quick                           32,647         21,317              3
+Heap                            38,559         65,897              2
+Selection2                   1,501,500          5,997             34
+Insertion2                     681,413        683,874             22
+
+Parameters used:
+  # items in input array: 2000
+  random # seed: 12345
+algorithm                data compares     data moves   milliseconds
+---------                -------------     ----------   ------------
+Selection                    1,999,000          5,982             15
+Insertion                      989,074        991,080             18
+Merge                           19,426         43,904              2
+Quick                           32,647         21,317              4
+Heap                            38,559         65,897              3
+Selection2                   1,501,500          5,997             36
+Insertion2                     681,413        683,874             20
+
+Parameters used:
+  # items in input array: 2000
+  random # seed: 12345
+algorithm                data compares     data moves   milliseconds
+---------                -------------     ----------   ------------
+Selection                    1,999,000          5,982             13
+Insertion                      989,074        991,080             17
+Merge                           19,426         43,904              2
+Quick                           32,647         21,317              2
+Heap                            38,559         65,897              3
+Selection2                   1,501,500          5,997             44
+Insertion2                     681,413        683,874             28
 
 
 4) In this question you will run TestSort three times using the
@@ -75,12 +178,49 @@ parameters indicated in the table:
 What are the sort statistics for each of the runs?
 
 Answer:
+Parameters used:
+  # items in input array: 6000
+  random # seed: 36714
+algorithm                data compares     data moves   milliseconds
+---------                -------------     ----------   ------------
+Selection                   17,997,000         17,973             49
+Insertion                    9,067,993      9,074,001             59
+Merge                           67,762        151,616              5
+Quick                          113,984         70,577              4
+Heap                           134,732        225,618              5
+Selection2                  13,504,500         17,997            161
+Insertion2                   6,024,551      6,032,075             44
 
+Parameters used:
+  # items in input array: 6000
+  random # seed: 36714
+algorithm                data compares     data moves   milliseconds
+---------                -------------     ----------   ------------
+Selection                   17,997,000              0             44
+Insertion                        5,999         11,998              1
+Merge                           36,656        151,616              4
+Quick                           98,753         28,951              4
+Heap                           182,467        388,935              7
+Selection2                  13,504,500         18,000            153
+Insertion2                       9,000         12,000              0
+
+Parameters used:
+  # items in input array: 6000
+  random # seed: 36714
+algorithm                data compares     data moves   milliseconds
+---------                -------------     ----------   ------------
+Selection                   17,997,000          9,000             48
+Insertion                   17,997,000     18,008,998            116
+Merge                           39,152        151,616              4
+Quick                          108,798         41,998              6
+Heap                           126,920        202,797              5
+Selection2                  13,504,500          9,000            117
+Insertion2                       9,000         21,000              1
 
 5) Briefly analyze your results from questions 2, 3, and 4.  Your
 analysis should consider the following:
 
-    - Are your results are consistent with the complexities of the
+    - Are your results consistent with the complexities of the
       sorting algorithms (as derived in class)?
 
     - How does the size of the input array affect a sort's performance
@@ -97,3 +237,11 @@ You should back up your analysis with examples and specific references
 to your results.
 
 Answer:
+Per question 2, both selection and insertion sorts (both versions) increase with n^2.
+The remaining sorts all increase with n plus a little, which would be consistent with nlog(n).
+This goes for both the compares and data moves, which means the sum of those two has the same growth, and our derivations for the complexity were based on total operations.
+This means that the size of the array drastically affects selection and insertion sorts, especially relative to the nlog(n) sorts. This can be seen in how much quicker the run times grow for those sorts.
+The effect of the ordering of the data set depends on the sort. The nlog(n) sorts don't benefit much from any specific arrangement of data elements; there is some fluctuation, but nothing notable.
+The selection and insertion sorts behave differently for the two scenarios.
+When the data set is ascending, insertion sort has little to no work to do (some slight optimizations could likely bring down the numbers in the runs above). The selection sort doesn't have to make any switches, but it gains no benefit in terms of comparisons made. This holds for the variations as well.
+For the descneding order, the story is the same for selection sort; no change in comparisons, and minimized swaps (though there are obviously some swaps to be done). For insertion sort, the effect is completely the opposite. A descending data set seems to be something of a worst case scenarios for this sort. That said, it seems that the variation for insertion sort alleviates this problem, helping it perform even better in total performance than selection.
